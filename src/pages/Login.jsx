@@ -19,7 +19,7 @@ const Login = () => {
   async function submitHandle(event) {
     event.preventDefault();
     const resp = await axios.post("/users/login", { username: user, password: pwd }).catch((err) => {
-      setError(err.response.data.message);
+      setError(err.response?.data?.message);
     });
     if (resp.data) {
       const user = resp.data.user;
