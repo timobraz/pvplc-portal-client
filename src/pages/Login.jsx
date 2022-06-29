@@ -21,7 +21,7 @@ const Login = () => {
     const resp = await axios.post("/users/login", { username: user, password: pwd }).catch((err) => {
       setError(err.response?.data?.message);
     });
-    if (resp.data) {
+    if (resp?.data) {
       const user = resp.data.user;
       setAuth({ ...user });
       setUser("");

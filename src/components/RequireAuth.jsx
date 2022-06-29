@@ -15,7 +15,7 @@ const RequireAuth = ({ allowedRoles }) => {
         console.log("redirecting to login after catch");
         navigate("/login");
       });
-      if (response.status === 200) {
+      if (response?.status === 200) {
         console.log("here");
         if (response.data.user?.roles?.some((role) => allowedRoles?.includes(role))) return setAuth(response.data.user);
         navigate("/login");

@@ -1,7 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import cl from "./ReportPreview.module.css";
 import RoundButton from "./Reusable/RoundButton";
 const ReportPreview = ({ data }) => {
   console.log(data);
+  const nav = useNavigate();
+  async function submitHandle(e) {
+    e.preventDefault();
+    nav("/reports/" + data?._id);
+  }
   return (
     <div className={cl.total}>
       <span className={cl.text + " " + cl.id}>{data?._id?.slice(-5)}</span>
