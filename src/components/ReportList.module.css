@@ -1,0 +1,12 @@
+.list {
+  /* background-color: white; */
+  min-height: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.text {
+  font-size: 1.5rem;
+  color: #4169e1;
+  /* text-decoration: underline; */
+}

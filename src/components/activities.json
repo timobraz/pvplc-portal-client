@@ -1,0 +1,22 @@
+[
+  {
+    "label": "Bike",
+    "options": [
+      { "label": "Biker off trail in habitat", "value": "Biker off trail in habitat" },
+      { "label": "Biker on non-bike trail", "value": "Biker on non-bike trail" },
+      { "label": "Biker on unauthorized/closed trail", "value": "Biker on unauthorized/closed trail" },
+      { "label": "Biker unsafe behavior", "value": "Biker unsafe behavior" }
+    ]
+  },
+  {
+    "label": "Damaging existing habitat",
+    "options": [{ "label": "Damaging existing habitat", "value": "Damaging existing habitat" }]
+  },
+  {
+    "label": "Dogs",
+    "options": [
+      { "label": "Dogs off-leash", "value": "Dogs off-leash" },
+      { "label": "Not picking up dog feces", "value": "Not picking up dog feces" }
+    ]
+  }
+]

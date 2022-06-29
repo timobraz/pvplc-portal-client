@@ -1,0 +1,24 @@
+.filter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.settings {
+  display: flex;
+  gap: 1rem;
+}
+
+.text {
+  font-size: 1.7rem;
+  color: rgb(8, 25, 52);
+}
+.total {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.title {
+  color: rgb(1, 18, 38);
+}
