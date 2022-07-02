@@ -11,45 +11,67 @@ import reserves from "../components/reserves.json";
 import useApi from "../hooks/useApi";
 import { useNavigate } from "react-router-dom";
 
-const NewReport = () => {
+const NewReport = ({ edit, data }) => {
   const nav = useNavigate();
   const axios = useApi();
-  const emptyActivity = { trail: "", activity: "", notes: "", quantity: 0, uuid: "" };
+  const emptyActivity = { trail: "", activity: "", notes: "", quantity: 1, uuid: "" };
   const [error, setError] = useState("");
-  useTitle("Create Report");
-  const [startDate, setStartDate] = useState(new Date());
-  const [startTime, setStartTime] = useState("13:10");
-  const [endTime, setEndTime] = useState("14:40");
+  useTitle(edit ? "Update Report" : "Create Report");
+  const [startDate, setStartDate] = useState(edit ? Date.parse(data.date) : new Date());
+  const [startTime, setStartTime] = useState(edit ? data.startTime : "13:10");
+  const [endTime, setEndTime] = useState(edit ? data.endTime : "14:40");
 
-  const [reserve, setReserve] = useState(null);
+  const [reserve, setReserve] = useState(edit ? { label: data.reserve, value: data.reserve } : null);
   const today = new Date();
 
-  const [activities, { removeAt, push, reset, updateAt }] = useList([{ trail: "", activity: "", notes: "", quantity: 0, uuid: "first" }]);
+  const [activities, { removeAt, push, reset, updateAt }] = useList(
+    edit ? data.activities : [{ trail: "", activity: "", notes: "", quantity: 1, uuid: "first" }]
+  );
   function deleteActivity(index) {
     removeAt(index);
   }
 
   async function submit(event) {
     event.preventDefault();
-    setError("");
-
-    const resp = await axios
-      .post("/reports", {
-        reserve: reserve.value,
-        activities,
-        date: startDate,
-        startTime,
-        endTime,
-      })
-      .catch((err) => {
-        setError(err.response.data.message);
-      });
-    if (resp.data) {
-      console.log(resp.data);
-      nav("/reports");
+    if (!edit) {
+      const resp = await axios
+        .post("/reports", {
+          reserve: reserve?.value,
+          activities,
+          date: startDate,
+          startTime,
+          endTime,
+        })
+        .catch((err) => {
+          setError(err.response?.data?.message);
+        });
+      if (resp?.data) {
+        console.log(resp.data);
+        setError("");
+        nav("/reports");
+      }
+    } else if (edit) {
+      const resp = await axios
+        .put("/reports/" + data._id, {
+          reserve: reserve?.value,
+          activities,
+          date: startDate,
+          startTime,
+          endTime,
+        })
+        .catch((err) => {
+          setError(err.response?.data?.message);
+        });
+      if (resp?.data) {
+        console.log(resp.data);
+        setError("");
+        nav("/reports");
+      }
     }
   }
-  console.log(activities);
+  function leave() {
+    nav("/reports/");
+  }
   return (
     <div className={cl.total}>
       <h1 className={cl.title}>New Report</h1>
@@ -76,7 +98,6 @@ const NewReport = () => {
         />
       </div>
       {activities.map((activity, index) => {
-        console.log(activity);
         return (
           <Activity
             key={activity.uuid}
@@ -101,12 +122,20 @@ const NewReport = () => {
           Add Activity
         </RoundButton>
         <RoundButton cl={cl.smallbutton} onClick={reset}>
-          Clear Activities
+          Reset Activities
         </RoundButton>
       </div>
-      <RoundButton cl={cl.button} onClick={(e) => submit(e)}>
-        Submit
-      </RoundButton>
+      <div className={cl.buttons}>
+        <RoundButton cl={cl.button} onClick={(e) => submit(e)}>
+          {edit ? "Update" : "Submit"}
+        </RoundButton>
+        {edit && (
+          <RoundButton cl={cl.button} onClick={leave}>
+            Cancel
+          </RoundButton>
+        )}
+      </div>
+
       {error && <p className={cl.error}>{error}</p>}
     </div>
   );

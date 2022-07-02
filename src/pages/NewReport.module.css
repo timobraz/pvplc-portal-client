@@ -49,6 +49,7 @@
 .buttons {
   display: flex;
   gap: 1rem;
+  justify-content: center;
 }
 .smallbutton {
   font-size: 1.1rem;

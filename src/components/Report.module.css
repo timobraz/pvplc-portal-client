@@ -1,0 +1,71 @@
+.total {
+  background-color: white;
+  padding: 2rem 3rem;
+  border-radius: 1rem;
+  width: 40rem;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  box-shadow: 0px 4px #13988d;
+}
+.label {
+  font-size: 1.4em;
+}
+
+.value {
+  padding: 0.5rem;
+  font-size: 1.1rem;
+  border-radius: 0.3rem;
+  width: 100%;
+  color: #005a52;
+  resize: vertical;
+
+  border: 1px solid black;
+}
+.area {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  width: 100%;
+  color: #005a52;
+  resize: vertical;
+  border: 1px solid black;
+  height: auto;
+}
+
+.error {
+  color: rgb(230, 58, 28);
+  font-size: 1.3rem;
+}
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.activity {
+  border-top: 1px rgb(36, 68, 100) solid;
+  margin-top: 1rem;
+}
+
+.heading {
+  align-items: flex-start;
+  text-align: left;
+  font-size: 1.6rem;
+  color: #13988d;
+  padding: 0.5rem 0;
+}
+
+.button {
+  font-size: 1.4rem;
+  padding: 0.5rem 2rem;
+  white-space: nowrap;
+  background-color: #13988d;
+  color: white;
+  box-shadow: 0px 3px #0c5e57;
+}
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
