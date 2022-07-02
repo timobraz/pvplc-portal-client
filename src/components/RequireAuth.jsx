@@ -7,7 +7,6 @@ const RequireAuth = ({ allowedRoles }) => {
   const { auth, setAuth } = useAuth();
   const location = useLocation();
   const axios = useApi();
-  console.log(auth);
   const navigate = useNavigate();
   useEffect(() => {
     const verifyUser = async () => {
