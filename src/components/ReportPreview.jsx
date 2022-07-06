@@ -10,7 +10,7 @@ const ReportPreview = ({ data }) => {
   return (
     <div className={cl.total}>
       <span className={cl.text + " " + cl.id}>{data?._id?.slice(-5)}</span>
-      <span className={cl.text + " " + cl.name}>{data.createdBy.name}</span>
+      <span className={cl.text + " " + cl.name}>{data?.createdBy?.name}</span>
       <span className={cl.text + " " + cl.time}>{data.timeSpent}</span>
 
       <span className={cl.text + " " + cl.reserve}>{data.reserve}</span>

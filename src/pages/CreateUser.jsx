@@ -48,7 +48,7 @@ const CreateUser = () => {
       </div>
       <div className={cl.slot}>
         <span className={cl.label}>Password</span>
-        <input type="text" name="pasword" id="" className={cl.input} value={password} onChange={(event) => setPassword(event.target.value)} />
+        <input type="text" name="phone" id="" className={cl.input} value={password} onChange={(event) => setPassword(event.target.value)} />
       </div>
       <div className={cl.slot}>
         <span className={cl.label}>Email</span>

@@ -18,5 +18,90 @@
       { "label": "Dogs off-leash", "value": "Dogs off-leash" },
       { "label": "Not picking up dog feces", "value": "Not picking up dog feces" }
     ]
+  },
+  {
+    "label": "Education",
+    "options": [{ "label": "Education", "value": "Education" }]
+  },
+  {
+    "label": "Equestrian",
+    "options": [
+      { "label": "Equestrian off trail in habitat", "value": "Equestrian off trail in habitat" },
+      { "label": "Equestrian on non-equestrian trail", "value": "Equestrian on non-equestrian trail" },
+      { "label": "Equestrian on unauthorized/closed trail", "value": "Equestrian on unauthorized/closed trail" },
+      { "label": "Equestrian unsafe behavior", "value": "Equestrian unsafe behavior" }
+    ]
+  },
+  {
+    "label": "Graffiti",
+    "options": [{ "label": "Graffiti", "value": "Graffiti" }]
+  },
+  {
+    "label": "Hiker",
+    "options": [
+      { "label": "Hiker off trail in habitat", "value": "Hiker off trail in habitat" },
+      { "label": "Hiker on unauthorized/closed trail", "value": "Hiker on unauthorized/closed trail" },
+      { "label": "Hiker unsafe behavior", "value": "Hiker unsafe behavior" }
+    ]
+  },
+  {
+    "label": "Motorized vehicles",
+    "options": [{ "label": "Motorized vehicles", "value": "Motorized vehicles" }]
+  },
+  {
+    "label": "No activity",
+    "options": [{ "label": "No activity", "value": "No activity" }]
+  },
+  {
+    "label": "Open flames/Smoking",
+    "options": [{ "label": "Open flames/Smoking", "value": "Open flames/Smoking" }]
+  },
+  {
+    "label": "Signs need repair/new decals",
+    "options": [{ "label": "Signs need repair/new decals", "value": "Signs need repair/new decals" }]
+  },
+  {
+    "label": "Other Infractions",
+    "options": [
+      { "label": "Adding plants and animals", "value": "Adding plants and animals" },
+      { "label": "Commercial Filming and photography", "value": "Commercial Filming and photography" },
+      { "label": "Discharge of Weapons", "value": "Adding plants and animals" },
+      { "label": "Adding plants and animals", "value": "Discharge of Weapons" },
+      { "label": "Illegal Camping", "value": "Illegal Camping" },
+      { "label": "Littering", "value": "Littering" },
+      { "label": "Motorized airplanes, helicopters, rockets", "value": "Motorized airplanes, helicopters, rockets" },
+      { "label": "Nudity", "value": "Nudity" },
+      { "label": "Paragliding", "value": "Paragliding" },
+      { "label": "Poaching", "value": "Poaching" },
+      { "label": "Use of Preserve After Hours", "value": "Use of Preserve After Hours" },
+      { "label": "Vandalism", "value": "Vandalism" }
+    ]
+  },
+  {
+    "label": "Other Non-Infractions",
+    "options": [
+      { "label": "Heat Exhaustion", "value": "Heat Exhaustion" },
+      { "label": "Injury", "value": "Injury" },
+      { "label": "Lost hiker", "value": "Lost hiker" },
+      { "label": "Lost item", "value": "Lost item" },
+      { "label": "Provided water", "value": "Provided water" },
+      { "label": "Report of injured pet/animal", "value": "Report of injured pet/animal" },
+      { "label": "Report of missing person", "value": "Report of missing person" },
+      { "label": "Report of missing pet", "value": "Report of missing pet" },
+      { "label": "Trail conditions impacting safety", "value": "Trail conditions impacting safety" }
+    ]
+  },
+  {
+    "label": "Evidence Of",
+    "options": [
+      { "label": "Evidence of bike use of non-bike trail", "value": "Evidence of bike use of non-bike trail" },
+      { "label": "Evidence of equestrian use of non-equestrian trail", "value": "Evidence of equestrian use of non-equestrian trail" },
+      { "label": "Evidence of smoking/fire", "value": "Evidence of smoking/fire" },
+      { "label": "Evidence of vegetation clearing, new illegal trail", "value": "Evidence of vegetation clearing, new illegal trail" }
+    ]
+  },
+  {
+    "label": "Other",
+    "options": [{ "label": "Other", "value": "Other" }]
   }
 ]
