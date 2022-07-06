@@ -10,6 +10,7 @@ import RoundButton from "./Reusable/RoundButton";
 import reserves from "./reserves.json";
 import trails from "./trails.json";
 import useAuth from "../hooks/useAuth";
+import jsontocsv from "json-to-csv-export";
 
 const months = [
   { value: "", label: "Any" },
@@ -77,22 +78,37 @@ const ReportList = (props) => {
     );
     if (resp?.data?.subtotal) {
       console.log(resp.data.subtotal);
-      downloadObjectAsJson(resp.data.subtotal, "subtotals");
+      const mapped = resp.data.subtotal.map((subtotal) => {
+        return { totalHours: subtotal.totalhours, totalMinutes: subtotal.totalminutes, user: subtotal.user_doc[0].name };
+      });
+      jsontocsv(mapped, "subtotalhours.csv");
+    }
+  }
+  async function getTotal() {
+    const resp = await axios.get(
+      `/reports/total?${month?.value ? "month=" + month.value : ""}&${year?.value ? "year=" + year.value : ""}&${
+        reserve?.value ? "reserve=" + reserve.value : ""
+      }&${trail?.value ? "trail=" + trail.value : ""}`
+    );
+    if (resp?.data?.total) {
+      console.log(resp.data.total);
+      const total = resp.data.total;
+      const mapped = total.map((subtotal) => {
+        return { ...subtotal, createdBy: subtotal.createdBy.name, activities: JSON.stringify(subtotal.activities).replace(/,/gm, "$") };
+      });
+      jsontocsv(mapped, "totals.csv", ", ");
     }
   }
 
-  function downloadObjectAsJson(exportObj, exportName) {
-    const mapped = exportObj.map((subtotal) => {
-      return { totalHours: subtotal.totalhours, totalMinutes: subtotal.totalminutes, user: subtotal.user_doc[0].name };
-    });
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(mapped));
-    const downloadAnchorNode = document.createElement("a");
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", exportName + ".json");
-    document.body.appendChild(downloadAnchorNode); // required for firefox
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
-  }
+  // function downloadObjectAsJson(exportObj, exportName) {
+  //   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+  //   const downloadAnchorNode = document.createElement("a");
+  //   downloadAnchorNode.setAttribute("href", dataStr);
+  //   downloadAnchorNode.setAttribute("download", exportName + ".json");
+  //   document.body.appendChild(downloadAnchorNode); // required for firefox
+  //   downloadAnchorNode.click();
+  //   downloadAnchorNode.remove();
+  // }
   return (
     <div className={cl.list}>
       <div className={cl.filter}>
@@ -125,7 +141,12 @@ const ReportList = (props) => {
           </RoundButton>
           {auth?.roles.includes("ADMIN") && (
             <RoundButton cl={cl.button} onClick={getSubtotals}>
-              Get Subtotals
+              Get Hour Subtotals
+            </RoundButton>
+          )}
+          {auth?.roles.includes("ADMIN") && (
+            <RoundButton cl={cl.button} onClick={getTotal}>
+              Get Full Data
             </RoundButton>
           )}
         </div>
