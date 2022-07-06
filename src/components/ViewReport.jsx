@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTitle } from "react-use";
 import useApi from "../hooks/useApi";
 import NewReport from "../pages/NewReport";
 import Report from "./Report";
@@ -9,6 +10,7 @@ const ViewReport = () => {
   const { id } = useParams();
   const [report, setReport] = useState(null);
   const [edit, setEdit] = useState(false);
+  useTitle("View Report");
   useEffect(() => {
     async function queryReport(id) {
       const resp = await axios.get("/reports/" + id).catch(() => {

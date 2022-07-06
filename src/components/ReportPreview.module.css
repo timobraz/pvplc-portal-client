@@ -1,8 +1,8 @@
 .total {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 0.5fr 1fr 0.5fr 1fr 1.5fr 1fr;
   align-items: center;
-  gap: 0.5rem;
+  gap: 2rem;
   text-align: center;
   padding: 1.3rem 1rem;
   justify-items: center;
@@ -12,16 +12,16 @@
 }
 
 .text {
-  font-size: 1.4rem;
+  font-size: 1.1rem;
   color: rgb(34, 34, 34);
 }
 
 .id {
   color: #2d6a92;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 .name {
-  font-size: 1.3em;
+  font-size: 1.1em;
 }
 .activities {
   color: rgb(71, 71, 71);
@@ -30,13 +30,14 @@
 }
 .time {
   color: #2d6a92;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
 .button {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   padding: 0.5rem 2rem;
   white-space: nowrap;
   background-color: #2d6a92;
   color: white;
+  box-shadow: 0px 3px #18384d;
 }

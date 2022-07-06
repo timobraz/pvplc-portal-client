@@ -13,6 +13,12 @@ import Admin from "./pages/Admin";
 import NewReport from "./pages/NewReport";
 import ReportList from "./components/ReportList";
 import ViewReport from "./components/ViewReport";
+import Users from "./pages/Users";
+import User from "./components/User";
+import UserList from "./components/UserList";
+import ViewUser from "./components/ViewUser";
+import CreateUser from "./pages/CreateUser";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -24,15 +30,19 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="login" element={<Login />} />
-
               <Route element={<RequireAuth allowedRoles={["ADMIN", "VOLUNTEER", "MOD"]} />}>
-                <Route path="reports" element={<Reports />}>
-                  <Route path=":id" element={<ViewReport />} />
-                  <Route index element={<ReportList />} />
+                <Route path="users" element={<Users />}>
+                  <Route path="create" element={<CreateUser />} />
+                  <Route path=":id" element={<ViewUser />} />
+                  <Route index element={<UserList />} />
                 </Route>
               </Route>
               <Route element={<RequireAuth allowedRoles={["ADMIN", "VOLUNTEER", "MOD"]} />}>
-                <Route path="create" element={<NewReport />} />
+                <Route path="reports" element={<Reports />}>
+                  <Route path="create" element={<NewReport />} />
+                  <Route path=":id" element={<ViewReport />} />
+                  <Route index element={<ReportList />} />
+                </Route>
               </Route>
               <Route element={<RequireAuth allowedRoles={["ADMIN", "VOLUNTEER", "MOD"]} />}>
                 <Route path="account" element={<Account />} />
@@ -40,6 +50,7 @@ function App() {
               <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
                 <Route path="admin" element={<Admin />} />
               </Route>
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthContextProvider>
         </ReportsContextProvider>

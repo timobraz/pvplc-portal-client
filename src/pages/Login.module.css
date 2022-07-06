@@ -14,7 +14,7 @@
 }
 .title {
   color: rgb(78, 73, 167);
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 .forms {
   display: flex;
@@ -49,4 +49,8 @@
 .error {
   color: peru;
   font-size: 1.3rem;
+}
+
+.description {
+  color: rgb(56, 56, 56);
 }

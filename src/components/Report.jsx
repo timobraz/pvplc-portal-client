@@ -22,10 +22,10 @@ const Report = ({ data, setEdit }) => {
   }
   return (
     <div className={cl.total}>
+      <div className={cl.heading}>
+        <span className={cl.title}>View Report</span>
+      </div>
       <div className={cl.slot}>
-        <div className={cl.heading}>
-          <span className={cl.title}>View Report</span>
-        </div>
         <label className={cl.label}>Name</label>
         <input type="text" disabled={true} value={data.createdBy.name} className={cl.value} />
       </div>
@@ -52,7 +52,7 @@ const Report = ({ data, setEdit }) => {
       {data.activities.map((activity, index) => (
         <ViewActivity key={activity.uuid} activity={activity} index={index} />
       ))}
-      {(auth?.roles?.includes("ADMIN") || auth?.roles?.includes("MOD") || data.createdBy.email == auth?.email) && (
+      {(auth?.roles?.includes("ADMIN") || auth?.roles?.includes("MOD") || data.createdBy.login == auth?.login) && (
         <div className={cl.buttons}>
           <RoundButton cl={cl.button} onClick={() => setEdit(true)}>
             Edit

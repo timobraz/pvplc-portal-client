@@ -17,7 +17,7 @@ const Header = () => {
         Users
       </Link>
       {auth?.roles?.includes("VOLUNTEER") && (
-        <Link to="/create" className={`${cl.link}`}>
+        <Link to="/reports/create" className={`${cl.link}`}>
           New Report
         </Link>
       )}
