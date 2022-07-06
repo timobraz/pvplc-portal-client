@@ -48,15 +48,15 @@ const User = ({ data, setData }) => {
       setNote(resp?.data?.user?.note);
     }
   }
-  // function formatPhone(phone) {
-  //   const split = phone.split("");
-  //   console.log(split);
+  function formatPhone(phone) {
+    const split = phone.split("");
+    console.log(split);
 
-  //   // const first = split.splice(3, 0, "-");
-  //   // const second = first.splice(7, 0, "-");
-  //   // console.log(second);
-  //   return second.join("");
-  // }
+    // const first = split.splice(3, 0, "-");
+    // const second = first.splice(7, 0, "-");
+    // console.log(second);
+    return second.join("");
+  }
   return (
     <div className={cl.total}>
       <div className={cl.slot}>
