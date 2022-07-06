@@ -94,7 +94,11 @@ const ReportList = (props) => {
       console.log(resp.data.total);
       const total = resp.data.total;
       const mapped = total.map((subtotal) => {
-        return { ...subtotal, createdBy: subtotal.createdBy.name, activities: JSON.stringify(subtotal.activities).replace(/,/gm, "$") };
+        return {
+          ...subtotal,
+          createdBy: subtotal.createdBy.name,
+          activities: JSON.stringify(subtotal.activities).replace(/\\|"/gm, "").replace(/(,)/gm, ";"),
+        };
       });
       jsontocsv(mapped, "totals.csv", ", ");
     }
