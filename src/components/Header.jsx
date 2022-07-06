@@ -22,11 +22,11 @@ const Header = () => {
         </Link>
       )}
 
-      {auth?.roles?.includes("ADMIN") && (
+      {/* {auth?.roles?.includes("ADMIN") && (
         <Link to="/admin" className={`${cl.link}`}>
           Admin Panel
         </Link>
-      )}
+      )} */}
       {Object.keys(auth).length === 0 ? (
         <Link to="/login" className={`${cl.link}`}>
           Login

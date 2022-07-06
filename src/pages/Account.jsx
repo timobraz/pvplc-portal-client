@@ -10,6 +10,7 @@ const Account = () => {
   const [edit, setEdit] = useState(false);
   const [name, setName] = useState(auth.name);
   const [email, setEmail] = useState(auth.email);
+  const [phone, setPhone] = useState(auth.phone);
   const [note, setNote] = useState(auth.note);
   const [error, setError] = useState("");
 
@@ -27,7 +28,7 @@ const Account = () => {
     }
   }
   async function update() {
-    const resp = await axios.put("/users/", { name, email, note }).catch(() => {
+    const resp = await axios.put("/users/", { name, email, note, phone }).catch(() => {
       console.log("failed to update");
       setError("Failed to update, make sure all fields are there");
     });
@@ -57,6 +58,14 @@ const Account = () => {
           <input type="text" value={email} className={cl.input} onChange={(e) => setEmail(e.target.value)} />
         ) : (
           <span className={cl.data}>{auth.email}</span>
+        )}
+      </div>
+      <div className={cl.slot}>
+        <span className={cl.label}>Phone</span>
+        {edit ? (
+          <input type="text" value={phone} className={cl.input} onChange={(e) => setPhone(e.target.value)} />
+        ) : (
+          <span className={cl.data}>{auth.phone}</span>
         )}
       </div>
       <div className={cl.slot}>

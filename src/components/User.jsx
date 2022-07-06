@@ -12,6 +12,7 @@ const User = ({ data, setData }) => {
   const [edit, setEdit] = useState(false);
   const [name, setName] = useState(data.name);
   const [email, setEmail] = useState(data.email);
+  const [phone, setPhone] = useState(data.phone);
   const [login, setLogin] = useState(data.login);
   const [roles, setRoles] = useState(data.roles.join(" "));
   const [note, setNote] = useState(data.note);
@@ -30,7 +31,7 @@ const User = ({ data, setData }) => {
     }
   }
   async function update() {
-    const resp = await axios.put("/users/" + data._id, { name, email, note, login, roles }).catch(() => {
+    const resp = await axios.put("/users/" + data._id, { name, email, note, login, roles, phone }).catch(() => {
       console.log("failed to update");
       setError("Failed to update, make sure all fields are there");
     });
@@ -47,6 +48,15 @@ const User = ({ data, setData }) => {
       setNote(resp?.data?.user?.note);
     }
   }
+  // function formatPhone(phone) {
+  //   const split = phone.split("");
+  //   console.log(split);
+
+  //   // const first = split.splice(3, 0, "-");
+  //   // const second = first.splice(7, 0, "-");
+  //   // console.log(second);
+  //   return second.join("");
+  // }
   return (
     <div className={cl.total}>
       <div className={cl.slot}>
@@ -78,6 +88,14 @@ const User = ({ data, setData }) => {
           <input type="text" disabled={true} value={data.email} className={cl.value} />
         ) : (
           <input type="text" value={email} className={cl.editing} onChange={(e) => setEmail(e.target.value)} />
+        )}
+      </div>
+      <div className={cl.slot}>
+        <label className={cl.label}>Phone</label>
+        {!edit ? (
+          <input type="text" disabled={true} value={data.phone} className={cl.value} />
+        ) : (
+          <input type="text" value={phone} className={cl.editing} onChange={(e) => setPhone(e.target.value)} />
         )}
       </div>
       <div className={cl.slot}>

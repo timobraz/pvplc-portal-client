@@ -12,6 +12,7 @@ const CreateUser = () => {
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState(
@@ -25,7 +26,7 @@ const CreateUser = () => {
   const nav = useNavigate();
 
   async function create() {
-    const resp = await axios.post("/users", { name, email, login, password, roles, note }).catch((err) => {
+    const resp = await axios.post("/users", { name, email, login, password, roles, note, phone }).catch((err) => {
       console.log("Couldnt make user");
       setError("Failed to create User");
     });
@@ -52,6 +53,10 @@ const CreateUser = () => {
       <div className={cl.slot}>
         <span className={cl.label}>Email</span>
         <input type="text" name="email" id="" className={cl.input} value={email} onChange={(event) => setEmail(event.target.value)} />
+      </div>
+      <div className={cl.slot}>
+        <span className={cl.label}>Phone</span>
+        <input type="text" name="email" id="" className={cl.input} value={phone} onChange={(event) => setPhone(event.target.value)} />
       </div>
       <div className={cl.slot}>
         <span className={cl.label}>Roles</span>
