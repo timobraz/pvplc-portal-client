@@ -9,13 +9,19 @@ const Activity = (props) => {
   const options = truetrails?.map((trail) => {
     return { label: trail, value: trail };
   });
-  // console.log(options.find((option) => option.value === props.activity.trail));
   function updateTrail(value, index) {
     const copy = props.activity;
     copy.trail = value;
     props.updateAt(index, copy);
   }
-
+  async function updatePictures(e, index) {
+    const files = e.files;
+    const copy = props.activity;
+    const response = await getBase64(files[0]);
+    copy.pictures = [...copy.pictures, response];
+    console.log(copy.pictures);
+    props.updateAt(index, copy);
+  }
   function updateActivity(value, index) {
     const copy = props.activity;
     copy.activity = value;
@@ -29,6 +35,27 @@ const Activity = (props) => {
   function updateArea(value, index) {
     const copy = props.activity;
     copy.notes = value;
+    props.updateAt(index, copy);
+  }
+  async function getBase64(file) {
+    const result = await new Promise((resolve, reject) => {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      console.log(file);
+
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.onerror = () => reject();
+    });
+    return result;
+  }
+  function deletePicture(indexpic, index) {
+    const copy = props.activity;
+    const picturecopy = copy.pictures;
+    picturecopy.splice(indexpic, 1);
+    copy.pictures = picturecopy;
     props.updateAt(index, copy);
   }
   return (
@@ -75,6 +102,20 @@ const Activity = (props) => {
           placeholder="Put your notes here"
           value={props.activity.notes}
         ></textarea>
+      </div>
+      <div className={cl.slot}>
+        <span className={cl.label}>Pictures</span>
+        <input type="file" className={cl.input} onChange={(e) => updatePictures(e.target, props.index)} accept="image/png, image/gif, image/jpeg" />
+        {props.activity.pictures?.length > 0 && (
+          <div className={cl.pictures}>
+            {props.activity.pictures.map((picture, index) => (
+              <div className={cl.pictureslot} key={picture}>
+                <p className={cl.index}>{index + 1}</p>
+                <img src={picture} alt="" className={cl.picture} onClick={() => deletePicture(index, props.index)} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import cl from "./NewReport.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import RoundButton from "../components/Reusable/RoundButton";
 import Select from "react-select";
 import Activity from "../components/Activity";
@@ -30,13 +30,13 @@ const NewReport = ({ edit, data,setEdit }) => {
   const [reserve, setReserve] = useState(edit ? { label: data.reserve, value: data.reserve } : null);
   const today = new Date();
 
-  const [activities, { removeAt, push, reset, updateAt,clear }] = useList(
-    edit ? data.activities : [{ trail: "", activity: "", notes: "", quantity: 1, uuid: uuid() }]
+  const [activities, { removeAt, push, reset, updateAt, clear }] = useList(
+    edit ? data.activities : [{ trail: "", activity: "", notes: "", quantity: 1, uuid: uuid(), pictures: [] }]
   );
   function deleteActivity(index) {
     removeAt(index);
   }
-
+  console.log(activities);
   async function submit(event) {
     event.preventDefault();
     if(noactivities&&activities?.length>0){
@@ -52,7 +52,7 @@ const NewReport = ({ edit, data,setEdit }) => {
       const resp = await axios
         .post("/reports", {
           reserve: reserve?.value,
-          activities:activities?.length>0?activities:undefined,
+          activities: activities?.length > 0 ? activities : undefined,
           date: startDate,
           startTime,
           endTime,
