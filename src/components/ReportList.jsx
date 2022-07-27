@@ -11,36 +11,14 @@ import reserves from "./reserves.json";
 import trails from "./trails.json";
 import useAuth from "../hooks/useAuth";
 import jsontocsv from "json-to-csv-export";
-
-const months = [
-  { value: "", label: "Any" },
-  { value: 0, label: "January" },
-  { value: 1, label: "February" },
-  { value: 2, label: "March" },
-  { value: 3, label: "April" },
-  { value: 4, label: "May" },
-  { value: 5, label: "June" },
-  { value: 6, label: "July" },
-  { value: 7, label: "August" },
-  { value: 8, label: "September" },
-  { value: 9, label: "October" },
-  { value: 10, label: "November" },
-  { value: 11, label: "December" },
-];
-
-const years = [
-  { value: "", label: "Any" },
-  { value: 2022, label: "2022" },
-  { value: 2021, label: "2021" },
-  { value: 2020, label: "2020" },
-  { value: 2019, label: "2019" },
-];
+import DatePicker from "react-datepicker";
 const ReportList = (props) => {
   const { reports, setReports } = useReports();
-  const [month, setMonth] = useState(null);
-  const [year, setYear] = useState(null);
   const [reserve, setReserve] = useState(null);
   const [trail, setTrail] = useState(null);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
   const { auth } = useAuth();
   const truetrails = trails[reserve?.label];
   const trailoptions = truetrails?.map((trail) => {
@@ -61,9 +39,9 @@ const ReportList = (props) => {
 
   async function filterReports() {
     const resp = await axios.get(
-      `/reports?${month?.value ? "month=" + month.value : ""}&${year?.value ? "year=" + year.value : ""}&${
-        reserve?.value ? "reserve=" + reserve.value : ""
-      }&${trail?.value ? "trail=" + trail.value : ""}`
+      `/reports?${startDate ? "start=" + startDate : ""}&${endDate ? "end=" + endDate : ""}&${reserve?.value ? "reserve=" + reserve.value : ""}&${
+        trail?.value ? "trail=" + trail.value : ""
+      }`
     );
     if (resp?.data?.reports) {
       console.log(resp.data.reports);
@@ -72,7 +50,7 @@ const ReportList = (props) => {
   }
   async function getSubtotals() {
     const resp = await axios.get(
-      `/reports/subtotals?${month?.value ? "month=" + month.value : ""}&${year?.value ? "year=" + year.value : ""}&${
+      `/reports/subtotals?${startDate ? "startDate=" + startDate : ""}&${endDate ? "end=" + endDate : ""}&${
         reserve?.value ? "reserve=" + reserve.value : ""
       }&${trail?.value ? "trail=" + trail.value : ""}`
     );
@@ -118,14 +96,8 @@ const ReportList = (props) => {
       <div className={cl.filter}>
         <h3 className={cl.title}>Filter Results</h3>
         <div className={cl.settings}>
-          <Select className={cl.selector} options={years} placeholder="Filter Year" value={year} onChange={(pick) => setYear(pick)} />
-          <Select
-            className={cl.selector}
-            options={year?.value ? months : []}
-            placeholder="Filter Month"
-            value={month}
-            onChange={(pick) => setMonth(pick)}
-          />
+          <DatePicker selected={startDate} maxDate={new Date()} className={cl.input} onChange={(date) => setStartDate(date)}></DatePicker>
+          <DatePicker selected={endDate} maxDate={new Date()} className={cl.input} onChange={(date) => setEndDate(date)}></DatePicker>
           <Select
             className={cl.selector}
             options={[{ value: "", label: "Any" }].concat(reserves)}
