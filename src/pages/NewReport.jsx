@@ -1,7 +1,7 @@
 import cl from "./NewReport.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RoundButton from "../components/Reusable/RoundButton";
 import Select from "react-select";
 import Activity from "../components/Activity";
@@ -20,12 +20,17 @@ const NewReport = ({ edit, data }) => {
   const [startDate, setStartDate] = useState(edit ? Date.parse(data.date) : new Date());
   const [startTime, setStartTime] = useState(edit ? data.startTime : "13:10");
   const [endTime, setEndTime] = useState(edit ? data.endTime : "14:40");
+  const [noactivities, setNoactivities] = useState(data?.activities?.length > 0 ? true : false);
+
+  useEffect(() => {
+    clear();
+  }, [noactivities]);
 
   const [reserve, setReserve] = useState(edit ? { label: data.reserve, value: data.reserve } : null);
   const today = new Date();
 
-  const [activities, { removeAt, push, reset, updateAt }] = useList(
-    edit ? data.activities : [{ trail: "", activity: "", notes: "", quantity: 1, uuid: "first", pictures: [] }]
+  const [activities, { removeAt, push, reset, updateAt, clear }] = useList(
+    edit ? data.activities : [{ trail: "", activity: "", notes: "", quantity: 1, uuid: uuid(), pictures: [] }]
   );
   function deleteActivity(index) {
     removeAt(index);
@@ -37,7 +42,7 @@ const NewReport = ({ edit, data }) => {
       const resp = await axios
         .post("/reports", {
           reserve: reserve?.value,
-          activities,
+          activities: activities?.length > 0 ? activities : undefined,
           date: startDate,
           startTime,
           endTime,
@@ -97,18 +102,24 @@ const NewReport = ({ edit, data }) => {
           onChange={(pick) => setReserve(pick)}
         />
       </div>
-      {activities.map((activity, index) => {
-        return (
-          <Activity
-            key={activity.uuid}
-            updateAt={updateAt}
-            activity={activity}
-            index={index}
-            delete={() => deleteActivity(index)}
-            reserve={reserve}
-          />
-        );
-      })}
+      <div className={cl.slot}>
+        <span className={cl.label}>No activities</span>
+        <input type="checkbox" className={cl.input} value={noactivities} onChange={(e) => setNoactivities(e.target.value)} />
+      </div>
+
+      {!noactivities &&
+        activities.map((activity, index) => {
+          return (
+            <Activity
+              key={activity.uuid}
+              updateAt={updateAt}
+              activity={activity}
+              index={index}
+              delete={() => deleteActivity(index)}
+              reserve={reserve}
+            />
+          );
+        })}
       <div className={cl.buttons}>
         <RoundButton
           cl={cl.smallbutton}
