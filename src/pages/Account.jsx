@@ -12,6 +12,7 @@ const Account = () => {
   const [email, setEmail] = useState(auth.email);
   const [phone, setPhone] = useState(auth.phone);
   const [note, setNote] = useState(auth.note);
+
   const [error, setError] = useState("");
 
   useTitle("Account");
@@ -73,6 +74,10 @@ const Account = () => {
         <span className={cl.data}>{auth.login}</span>
       </div>
       <div className={cl.slot}>
+        <span className={cl.label}>Volunteer Hub ID</span>
+        <span className={cl.data}>{auth.volunteerID}</span>
+      </div>
+      <div className={cl.slot}>
         <span className={cl.label}>Roles</span>
         <span className={cl.data}>{auth.roles?.join(", ")}</span>
       </div>
@@ -88,6 +93,7 @@ const Account = () => {
           <span className={cl.data}>{auth.note}</span>
         )}
       </div>
+      
       {edit ? (
         <>
           <div className={cl.buttons}>

@@ -24,6 +24,10 @@
   width: 100%;
   text-align: left;
 }
+.checkbox{
+  height:2rem;
+  width:2rem;
+}
 
 .label {
   font-size: 1.4rem;

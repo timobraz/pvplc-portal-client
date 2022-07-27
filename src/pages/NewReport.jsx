@@ -11,7 +11,7 @@ import reserves from "../components/reserves.json";
 import useApi from "../hooks/useApi";
 import { useNavigate } from "react-router-dom";
 
-const NewReport = ({ edit, data }) => {
+const NewReport = ({ edit, data,setEdit }) => {
   const nav = useNavigate();
   const axios = useApi();
   const emptyActivity = { trail: "", activity: "", notes: "", quantity: 1, uuid: "" };
@@ -20,11 +20,12 @@ const NewReport = ({ edit, data }) => {
   const [startDate, setStartDate] = useState(edit ? Date.parse(data.date) : new Date());
   const [startTime, setStartTime] = useState(edit ? data.startTime : "13:10");
   const [endTime, setEndTime] = useState(edit ? data.endTime : "14:40");
-  const [noactivities, setNoactivities] = useState(data?.activities?.length > 0 ? true : false);
+  const [noactivities, setNoactivities] = useState(edit?data?.activities&&data.activities.length>0?false:true:false);
 
-  useEffect(() => {
-    clear();
-  }, [noactivities]);
+  useEffect(()=>{
+    noactivities?clear():reset()
+    
+  },[noactivities])
 
   const [reserve, setReserve] = useState(edit ? { label: data.reserve, value: data.reserve } : null);
   const today = new Date();
@@ -38,7 +39,16 @@ const NewReport = ({ edit, data }) => {
   console.log(activities);
   async function submit(event) {
     event.preventDefault();
+    if(noactivities&&activities?.length>0){
+      setError("No activities")
+      return
+    }
+    if(!noactivities&&activities?.length==0){
+      setError("Should be activities")
+      return
+    }
     if (!edit) {
+      
       const resp = await axios
         .post("/reports", {
           reserve: reserve?.value,
@@ -75,7 +85,7 @@ const NewReport = ({ edit, data }) => {
     }
   }
   function leave() {
-    nav("/reports/");
+    setEdit(false)
   }
   return (
     <div className={cl.total}>
@@ -104,22 +114,25 @@ const NewReport = ({ edit, data }) => {
       </div>
       <div className={cl.slot}>
         <span className={cl.label}>No activities</span>
-        <input type="checkbox" className={cl.input} value={noactivities} onChange={(e) => setNoactivities(e.target.value)} />
+        <input
+          type="checkbox"
+          className={cl.checkbox}
+          checked={noactivities}
+          onChange={(e)=>setNoactivities(e.target.checked)}
+        />
       </div>
-
-      {!noactivities &&
-        activities.map((activity, index) => {
-          return (
-            <Activity
-              key={activity.uuid}
-              updateAt={updateAt}
-              activity={activity}
-              index={index}
-              delete={() => deleteActivity(index)}
-              reserve={reserve}
-            />
-          );
-        })}
+    {!noactivities&& <>{ activities.map((activity, index) => {
+        return (
+          <Activity
+            key={activity.uuid}
+            updateAt={updateAt}
+            activity={activity}
+            index={index}
+            delete={() => deleteActivity(index)}
+            reserve={reserve}
+          />
+        );
+      })}
       <div className={cl.buttons}>
         <RoundButton
           cl={cl.smallbutton}
@@ -136,6 +149,7 @@ const NewReport = ({ edit, data }) => {
           Reset Activities
         </RoundButton>
       </div>
+      </>}
       <div className={cl.buttons}>
         <RoundButton cl={cl.button} onClick={(e) => submit(e)}>
           {edit ? "Update" : "Submit"}
@@ -146,6 +160,9 @@ const NewReport = ({ edit, data }) => {
           </RoundButton>
         )}
       </div>
+      
+      
+      
 
       {error && <p className={cl.error}>{error}</p>}
     </div>
