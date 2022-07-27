@@ -16,6 +16,8 @@ const User = ({ data, setData }) => {
   const [login, setLogin] = useState(data.login);
   const [roles, setRoles] = useState(data.roles.join(" "));
   const [note, setNote] = useState(data.note);
+  const [volunteerID, setVolunteerID] = useState(data.volunteerID);
+
   const nav = useNavigate();
   async function deleteUser() {
     const resp = await axios.delete("/users/" + data._id).catch((err) => {
@@ -31,7 +33,7 @@ const User = ({ data, setData }) => {
     }
   }
   async function update() {
-    const resp = await axios.put("/users/" + data._id, { name, email, note, login, roles, phone }).catch(() => {
+    const resp = await axios.put("/users/" + data._id, { name, email, note, login, roles, phone,volunteerID }).catch(() => {
       console.log("failed to update");
       setError("Failed to update, make sure all fields are there");
     });
@@ -46,6 +48,8 @@ const User = ({ data, setData }) => {
       setLogin(resp?.data?.user?.login);
       setRoles(resp?.data?.user?.roles?.join(" "));
       setNote(resp?.data?.user?.note);
+      setVolunteerID(resp?.data?.user?.volunteerID);
+
     }
   }
   function formatPhone(phone) {
@@ -80,6 +84,14 @@ const User = ({ data, setData }) => {
           <input type="text" value={login} className={cl.editing} onChange={(e) => setLogin(e.target.value)} />
         ) : (
           <input type="text" disabled={true} value={data.login} className={cl.value} />
+        )}
+      </div>
+      <div className={cl.slot}>
+        <label className={cl.label}>Volunteer Hub ID</label>
+        {edit && (auth?.roles?.includes("ADMIN") || auth?.roles?.includes("MOD")) ? (
+          <input type="text" value={volunteerID} className={cl.editing} onChange={(e) => setVolunteerID(e.target.value)} />
+        ) : (
+          <input type="text" disabled={true} value={data.volunteerID} className={cl.value} />
         )}
       </div>
       <div className={cl.slot}>

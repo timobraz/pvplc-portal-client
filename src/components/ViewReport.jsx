@@ -23,7 +23,7 @@ const ViewReport = () => {
     }
     queryReport(id);
   }, []);
-  return report ? edit == true ? <NewReport edit={true} data={report} /> : <Report setEdit={setEdit} data={report} /> : <Loader />;
+  return report ? edit == true ? <NewReport edit={true} data={report} setEdit={setEdit}/> : <Report setEdit={setEdit} data={report} /> : <Loader />;
 };
 
 export default ViewReport;

@@ -15,9 +15,9 @@ const ReportPreview = ({ data }) => {
 
       <span className={cl.text + " " + cl.reserve}>{data.reserve}</span>
       <span className={cl.element + " " + cl.activities}>
-        {data.activities.map((activity) => (
+        {data.activities.length>0?data.activities.map((activity) => (
           <p key={activity.uuid + " : " + activity.type}>{activity.trail + " : " + activity.activity}</p>
-        ))}
+        )):"No activities"}
       </span>
       <RoundButton cl={cl.button} onClick={(e) => submitHandle(e)}>
         View

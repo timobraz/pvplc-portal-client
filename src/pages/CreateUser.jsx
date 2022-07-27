@@ -13,7 +13,7 @@ const CreateUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-
+  const [volunteerID,setVolunteerID]=useState("")
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState(
     genpass.generate({
@@ -26,7 +26,7 @@ const CreateUser = () => {
   const nav = useNavigate();
 
   async function create() {
-    const resp = await axios.post("/users", { name, email, login, password, roles, note, phone }).catch((err) => {
+    const resp = await axios.post("/users", { name, email, login, password, roles, note, phone,volunteerID }).catch((err) => {
       console.log("Couldnt make user");
       setError("Failed to create User");
     });
@@ -45,6 +45,10 @@ const CreateUser = () => {
       <div className={cl.slot}>
         <span className={cl.label}>Login</span>
         <input type="text" name="login" id="" className={cl.input} value={login} onChange={(event) => setLogin(event.target.value)} />
+      </div>
+      <div className={cl.slot}>
+        <span className={cl.label}>Volunteer Hub ID</span>
+        <input type="text"  id="" className={cl.input} value={volunteerID} onChange={(event) => setVolunteerID(event.target.value)} />
       </div>
       <div className={cl.slot}>
         <span className={cl.label}>Password</span>
