@@ -25,12 +25,12 @@ const NewReport = ({ edit, data }) => {
   const today = new Date();
 
   const [activities, { removeAt, push, reset, updateAt }] = useList(
-    edit ? data.activities : [{ trail: "", activity: "", notes: "", quantity: 1, uuid: "first" }]
+    edit ? data.activities : [{ trail: "", activity: "", notes: "", quantity: 1, uuid: "first", pictures: [] }]
   );
   function deleteActivity(index) {
     removeAt(index);
   }
-
+  console.log(activities);
   async function submit(event) {
     event.preventDefault();
     if (!edit) {
