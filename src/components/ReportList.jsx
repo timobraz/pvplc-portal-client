@@ -18,7 +18,8 @@ const ReportList = (props) => {
   const [trail, setTrail] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
+  const [volunteer, setVolunteer] = useState(null);
+  const [volunteeroptions, setVolunteeroptions] = useState([]);
   const { auth } = useAuth();
   const truetrails = trails[reserve?.label];
   const trailoptions = truetrails?.map((trail) => {
@@ -35,13 +36,25 @@ const ReportList = (props) => {
       }
     }
     getReports();
+    async function getVolunteers() {
+      const resp = await axios.get("/users");
+      console.log(resp?.data);
+      if (resp?.data?.users) {
+        const namespick = resp.data.users.map((user) => {
+          return { value: user._id, label: user.name };
+        });
+        console.log(namespick);
+        setVolunteeroptions(namespick);
+      }
+    }
+    getVolunteers();
   }, []);
 
   async function filterReports() {
     const resp = await axios.get(
       `/reports?${startDate ? "start=" + startDate : ""}&${endDate ? "end=" + endDate : ""}&${reserve?.value ? "reserve=" + reserve.value : ""}&${
         trail?.value ? "trail=" + trail.value : ""
-      }`
+      }&${volunteer?.value ? "volunteer=" + volunteer.value : ""}`
     );
     if (resp?.data?.reports) {
       console.log(resp.data.reports);
@@ -52,7 +65,7 @@ const ReportList = (props) => {
     const resp = await axios.get(
       `/reports/subtotals?${startDate ? "startDate=" + startDate : ""}&${endDate ? "end=" + endDate : ""}&${
         reserve?.value ? "reserve=" + reserve.value : ""
-      }&${trail?.value ? "trail=" + trail.value : ""}`
+      }&${trail?.value ? "trail=" + trail.value : ""}&${volunteer?.value ? "volunteer=" + volunteer.value : ""}`
     );
     if (resp?.data?.subtotal) {
       console.log(resp.data.subtotal);
@@ -66,7 +79,7 @@ const ReportList = (props) => {
     const resp = await axios.get(
       `/reports/total?${month?.value ? "month=" + month.value : ""}&${year?.value ? "year=" + year.value : ""}&${
         reserve?.value ? "reserve=" + reserve.value : ""
-      }&${trail?.value ? "trail=" + trail.value : ""}`
+      }&${trail?.value ? "trail=" + trail.value : ""}&${volunteer?.value ? "volunteer=" + volunteer.value : ""}`
     );
     if (resp?.data?.total) {
       console.log(resp.data.total);
@@ -111,6 +124,13 @@ const ReportList = (props) => {
             placeholder="Filter Trail"
             value={trail}
             onChange={(pick) => setTrail(pick)}
+          />
+          <Select
+            className={cl.selector}
+            options={volunteeroptions ? [{ value: "", label: "Any" }].concat(volunteeroptions) : []}
+            placeholder="Filter volunteer"
+            value={volunteer}
+            onChange={(pick) => setVolunteer(pick)}
           />
           <RoundButton cl={cl.button} onClick={filterReports}>
             Filter
