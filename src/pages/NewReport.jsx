@@ -11,7 +11,7 @@ import reserves from "../components/reserves.json";
 import useApi from "../hooks/useApi";
 import { useNavigate } from "react-router-dom";
 
-const NewReport = ({ edit, data,setEdit }) => {
+const NewReport = ({ edit, data, setEdit }) => {
   const nav = useNavigate();
   const axios = useApi();
   const emptyActivity = { trail: "", activity: "", notes: "", quantity: 1, uuid: "" };
@@ -20,13 +20,33 @@ const NewReport = ({ edit, data,setEdit }) => {
   const [startDate, setStartDate] = useState(edit ? Date.parse(data.date) : new Date());
   const [startTime, setStartTime] = useState(edit ? data.startTime : "13:10");
   const [endTime, setEndTime] = useState(edit ? data.endTime : "14:40");
-  const [noactivities, setNoactivities] = useState(edit?data?.activities&&data.activities.length>0?false:true:false);
+  const [noactivities, setNoactivities] = useState(edit ? (data?.activities && data.activities.length > 0 ? false : true) : false);
+  const [buddies, setBuddies] = useState(
+    edit
+      ? data.buddies.map((bud) => {
+          return { value: bud._id, label: bud.name };
+        })
+      : []
+  );
+  const [volunteeroptions, setVolunteeroptions] = useState([]);
+  useEffect(() => {
+    noactivities ? clear() : reset();
+  }, [noactivities]);
 
-  useEffect(()=>{
-    noactivities?clear():reset()
-    
-  },[noactivities])
-
+  useEffect(() => {
+    async function getVolunteers() {
+      const resp = await axios.get("/users/volunteers");
+      console.log(resp?.data);
+      if (resp?.data?.users) {
+        const namespick = resp.data.users.map((user) => {
+          return { value: user._id, label: user.name };
+        });
+        console.log(namespick);
+        setVolunteeroptions(namespick);
+      }
+    }
+    getVolunteers();
+  }, []);
   const [reserve, setReserve] = useState(edit ? { label: data.reserve, value: data.reserve } : null);
   const today = new Date();
 
@@ -39,21 +59,24 @@ const NewReport = ({ edit, data,setEdit }) => {
   console.log(activities);
   async function submit(event) {
     event.preventDefault();
-    if(noactivities&&activities?.length>0){
-      setError("No activities")
-      return
+    if (noactivities && activities?.length > 0) {
+      setError("No activities");
+      return;
     }
-    if(!noactivities&&activities?.length==0){
-      setError("Should be activities")
-      return
+    if (!noactivities && activities?.length == 0) {
+      setError("Should be activities");
+      return;
     }
+    const properbuddies = buddies.map((buddy) => {
+      return { name: buddy.label, _id: buddy.value };
+    });
     if (!edit) {
-      
       const resp = await axios
         .post("/reports", {
           reserve: reserve?.value,
           activities: activities?.length > 0 ? activities : undefined,
           date: startDate,
+          buddies: properbuddies,
           startTime,
           endTime,
         })
@@ -69,7 +92,8 @@ const NewReport = ({ edit, data,setEdit }) => {
       const resp = await axios
         .put("/reports/" + data._id, {
           reserve: reserve?.value,
-          activities,
+          activities: activities?.length > 0 ? activities : undefined,
+          buddies: properbuddies,
           date: startDate,
           startTime,
           endTime,
@@ -85,7 +109,7 @@ const NewReport = ({ edit, data,setEdit }) => {
     }
   }
   function leave() {
-    setEdit(false)
+    setEdit(false);
   }
   return (
     <div className={cl.total}>
@@ -113,43 +137,52 @@ const NewReport = ({ edit, data,setEdit }) => {
         />
       </div>
       <div className={cl.slot}>
-        <span className={cl.label}>No activities</span>
-        <input
-          type="checkbox"
-          className={cl.checkbox}
-          checked={noactivities}
-          onChange={(e)=>setNoactivities(e.target.checked)}
+        <span className={cl.label}>Buddies</span>
+        <Select
+          className={cl.selector}
+          options={volunteeroptions || []}
+          placeholder="Add buddies"
+          value={buddies}
+          onChange={(pick) => setBuddies(pick)}
+          isMulti={true}
         />
       </div>
-    {!noactivities&& <>{ activities.map((activity, index) => {
-        return (
-          <Activity
-            key={activity.uuid}
-            updateAt={updateAt}
-            activity={activity}
-            index={index}
-            delete={() => deleteActivity(index)}
-            reserve={reserve}
-          />
-        );
-      })}
-      <div className={cl.buttons}>
-        <RoundButton
-          cl={cl.smallbutton}
-          onClick={() => {
-            const emptycopy = emptyActivity;
-            const id = uuid();
-            emptycopy.uuid = id;
-            push(emptycopy);
-          }}
-        >
-          Add Activity
-        </RoundButton>
-        <RoundButton cl={cl.smallbutton} onClick={reset}>
-          Reset Activities
-        </RoundButton>
+      <div className={cl.slot}>
+        <span className={cl.label}>No activities</span>
+        <input type="checkbox" className={cl.checkbox} checked={noactivities} onChange={(e) => setNoactivities(e.target.checked)} />
       </div>
-      </>}
+      {!noactivities && (
+        <>
+          {activities.map((activity, index) => {
+            return (
+              <Activity
+                key={activity.uuid}
+                updateAt={updateAt}
+                activity={activity}
+                index={index}
+                delete={() => deleteActivity(index)}
+                reserve={reserve}
+              />
+            );
+          })}
+          <div className={cl.buttons}>
+            <RoundButton
+              cl={cl.smallbutton}
+              onClick={() => {
+                const emptycopy = emptyActivity;
+                const id = uuid();
+                emptycopy.uuid = id;
+                push(emptycopy);
+              }}
+            >
+              Add Activity
+            </RoundButton>
+            <RoundButton cl={cl.smallbutton} onClick={reset}>
+              Reset Activities
+            </RoundButton>
+          </div>
+        </>
+      )}
       <div className={cl.buttons}>
         <RoundButton cl={cl.button} onClick={(e) => submit(e)}>
           {edit ? "Update" : "Submit"}
@@ -160,9 +193,6 @@ const NewReport = ({ edit, data,setEdit }) => {
           </RoundButton>
         )}
       </div>
-      
-      
-      
 
       {error && <p className={cl.error}>{error}</p>}
     </div>

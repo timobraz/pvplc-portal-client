@@ -41,6 +41,12 @@ const Report = ({ data, setEdit }) => {
         <label className={cl.label}>Reserve</label>
         <input type="text" disabled={true} value={data.reserve} className={cl.value} />
       </div>
+      {data.buddies?.length > 0 && (
+        <div className={cl.slot}>
+          <label className={cl.label}>Buddies</label>
+          <input type="text" disabled={true} value={data.buddies.map((buddy) => buddy.name).join(", ")} className={cl.value} />
+        </div>
+      )}
       <div className={cl.slot}>
         <label className={cl.label}>Start Time</label>
         <input type="text" disabled={true} value={data.startTime} className={cl.value} />

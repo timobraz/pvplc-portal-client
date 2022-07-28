@@ -16,7 +16,7 @@ const ReportList = (props) => {
   const { reports, setReports } = useReports();
   const [reserve, setReserve] = useState(null);
   const [trail, setTrail] = useState(null);
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date(2022, 0, 1));
   const [endDate, setEndDate] = useState(new Date());
   const [volunteer, setVolunteer] = useState(null);
   const [volunteeroptions, setVolunteeroptions] = useState([]);
@@ -37,7 +37,7 @@ const ReportList = (props) => {
     }
     getReports();
     async function getVolunteers() {
-      const resp = await axios.get("/users");
+      const resp = await axios.get("/users/volunteers");
       console.log(resp?.data);
       if (resp?.data?.users) {
         const namespick = resp.data.users.map((user) => {
@@ -63,7 +63,7 @@ const ReportList = (props) => {
   }
   async function getSubtotals() {
     const resp = await axios.get(
-      `/reports/subtotals?${startDate ? "startDate=" + startDate : ""}&${endDate ? "end=" + endDate : ""}&${
+      `/reports/subtotals?${startDate ? "start=" + startDate : ""}&${endDate ? "end=" + endDate : ""}&${
         reserve?.value ? "reserve=" + reserve.value : ""
       }&${trail?.value ? "trail=" + trail.value : ""}&${volunteer?.value ? "volunteer=" + volunteer.value : ""}`
     );
@@ -77,7 +77,7 @@ const ReportList = (props) => {
   }
   async function getTotal() {
     const resp = await axios.get(
-      `/reports/total?${month?.value ? "month=" + month.value : ""}&${year?.value ? "year=" + year.value : ""}&${
+      `/reports/total?${startDate ? "start=" + startDate : ""}&${endDate ? "end=" + endDate : ""}&${
         reserve?.value ? "reserve=" + reserve.value : ""
       }&${trail?.value ? "trail=" + trail.value : ""}&${volunteer?.value ? "volunteer=" + volunteer.value : ""}`
     );
