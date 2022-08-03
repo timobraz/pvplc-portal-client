@@ -125,13 +125,15 @@ const ReportList = (props) => {
             value={trail}
             onChange={(pick) => setTrail(pick)}
           />
-          <Select
-            className={cl.selector}
-            options={volunteeroptions ? [{ value: "", label: "Any" }].concat(volunteeroptions) : []}
-            placeholder="Filter volunteer"
-            value={volunteer}
-            onChange={(pick) => setVolunteer(pick)}
-          />
+          {auth?.roles.includes("ADMIN") && (
+            <Select
+              className={cl.selector}
+              options={volunteeroptions ? [{ value: "", label: "Any" }].concat(volunteeroptions) : []}
+              placeholder="Filter volunteer"
+              value={volunteer}
+              onChange={(pick) => setVolunteer(pick)}
+            />
+          )}
           <RoundButton cl={cl.button} onClick={filterReports}>
             Filter
           </RoundButton>
