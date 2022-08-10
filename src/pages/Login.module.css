@@ -54,3 +54,8 @@
 .description {
   color: rgb(56, 56, 56);
 }
+
+.forgot {
+  color: gray;
+  font-size: 1.3rem;
+}

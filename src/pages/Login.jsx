@@ -12,14 +12,13 @@ const Login = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuth();
 
-  useEffect(() => {
-    setError("");
-  }, [user, pwd]);
-
   async function submitHandle(event) {
+    setError("");
+
     event.preventDefault();
     const resp = await axios.post("/users/login", { username: user, password: pwd }).catch((err) => {
       setError(err.response?.data?.message);
+      setPwd("");
     });
     if (resp?.data) {
       const user = resp.data.user;
@@ -30,6 +29,11 @@ const Login = () => {
     }
   }
 
+  async function forgotPassword(event) {
+    setUser("");
+    setPwd("");
+    navigate("auth", { replace: true });
+  }
   return (
     <div className={cl.total}>
       <h1 className={cl.description}>Trail Watch Report</h1>
@@ -38,15 +42,16 @@ const Login = () => {
         <label htmlFor="username" className={cl.label}>
           Username
         </label>
-        <input type="text" onChange={(e) => setUser(e.target.value)} id="username" className={cl.input} />
+        <input type="text" onChange={(e) => setUser(e.target.value)} id="username" className={cl.input} value={user} />
         <label htmlFor="username" className={cl.label}>
           Password
         </label>
-        <input onChange={(e) => setPwd(e.target.value)} type="password" id="password" className={cl.input} />
+        <input onChange={(e) => setPwd(e.target.value)} type="password" id="password" className={cl.input} value={pwd} />
         {error && <p className={cl.error}>{error}</p>}
         <RoundButton cl={cl.button} onClick={(e) => submitHandle(e)}>
           Submit
         </RoundButton>
+        <span className={cl.forgot}>Forgot Password</span>
       </form>
     </div>
   );

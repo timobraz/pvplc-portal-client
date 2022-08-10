@@ -16,7 +16,7 @@ const ReportList = (props) => {
   const { reports, setReports } = useReports();
   const [reserve, setReserve] = useState(null);
   const [trail, setTrail] = useState(null);
-  const [startDate, setStartDate] = useState(new Date(2022, 0, 1));
+  const [startDate, setStartDate] = useState(new Date(Date.now() - 2629800000));
   const [endDate, setEndDate] = useState(new Date());
   const [volunteer, setVolunteer] = useState(null);
   const [volunteeroptions, setVolunteeroptions] = useState([]);
@@ -70,7 +70,12 @@ const ReportList = (props) => {
     if (resp?.data?.subtotal) {
       console.log(resp.data.subtotal);
       const mapped = resp.data.subtotal.map((subtotal) => {
-        return { totalHours: subtotal.totalhours, totalMinutes: subtotal.totalminutes, user: subtotal.user_doc[0].name };
+        return {
+          "Total Hours": subtotal.totalhours,
+          "Total Minutes": subtotal.totalminutes,
+          user: subtotal.user_doc[0].name,
+          volunteerID: subtotal.user_doc[0].volunteerID,
+        };
       });
       jsontocsv(mapped, "subtotalhours.csv");
     }
@@ -84,6 +89,15 @@ const ReportList = (props) => {
     if (resp?.data?.total) {
       console.log(resp.data.total);
       const total = resp.data.total;
+      total.forEach((subtotal) => {
+        {
+          subtotal.activities.forEach((activity) => {
+            delete activity.pictures;
+            delete activity._id;
+            delete activity.uuid;
+          });
+        }
+      });
       const mapped = total.map((subtotal) => {
         return {
           ...subtotal,
@@ -134,21 +148,23 @@ const ReportList = (props) => {
               onChange={(pick) => setVolunteer(pick)}
             />
           )}
-          <RoundButton cl={cl.button} onClick={filterReports}>
-            Filter
-          </RoundButton>
           {auth?.roles.includes("ADMIN") && (
-            <RoundButton cl={cl.button} onClick={getSubtotals}>
-              Get Hour Subtotals
-            </RoundButton>
-          )}
-          {auth?.roles.includes("ADMIN") && (
-            <RoundButton cl={cl.button} onClick={getTotal}>
-              Get Full Data
-            </RoundButton>
+            <div className={cl.buttons}>
+              <RoundButton cl={cl.button} onClick={filterReports}>
+                Filter
+              </RoundButton>
+              <RoundButton cl={cl.button} onClick={getSubtotals}>
+                Get Hour Subtotals
+              </RoundButton>
+
+              <RoundButton cl={cl.button} onClick={getTotal}>
+                Get Full Data
+              </RoundButton>
+            </div>
           )}
         </div>
       </div>
+
       <h1 className={cl.title}>Report List</h1>
       <div className={cl2.total}>
         <span className={cl.text}>ID</span>
